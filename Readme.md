@@ -81,7 +81,6 @@ POST /token
 **Exemple de réponse** :
 
 ```json
-POST /token
 {
   "access_token": "your_jwt_token",
   "token_type": "bearer"
