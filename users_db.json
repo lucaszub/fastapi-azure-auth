@@ -1,0 +1,16 @@
+{
+    "string": {
+        "username": "string",
+        "email": "user@example.com",
+        "full_name": "string",
+        "hashed_password": "$2b$12$rExK6/LkzwQpUUxJKOLb8uc3J38fC2v5j0S6gst8W2yziUnc9Rqci",
+        "disabled": false
+    },
+    "lucas": {
+        "username": "lucas",
+        "email": "lucas@example.com",
+        "full_name": "lucaszubiarrain",
+        "hashed_password": "$2b$12$rvM9jt9N6cDl.3XyFOPo5upNXOqv9QCwhru2FAbAXwmpWRL2F/iK.",
+        "disabled": false
+    }
+}
