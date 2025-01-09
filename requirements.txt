@@ -3,3 +3,5 @@ typing-extensions
 fastapi[standard]
 PyJWT
 passlib[bcrypt]
+python-dotenv
+sqlalchemy

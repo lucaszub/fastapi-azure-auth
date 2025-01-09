@@ -12,5 +12,19 @@
         "full_name": "lucaszubiarrain",
         "hashed_password": "$2b$12$rvM9jt9N6cDl.3XyFOPo5upNXOqv9QCwhru2FAbAXwmpWRL2F/iK.",
         "disabled": false
+    },
+    "zoe": {
+        "username": "zoe",
+        "email": "zoe@example.com",
+        "full_name": "zoe",
+        "hashed_password": "$2b$12$lQhgtwF4WKuWrmU5UMDbVOlSXrGXP5atT7CPSAfMQcuM5IRBbvJ22",
+        "disabled": false
+    },
+    "seb": {
+        "username": "seb",
+        "email": "seg@exemple.com",
+        "full_name": "seb",
+        "disabled": true,
+        "hashed_password": "$2b$12$0zR2RcOtPBwPpFNRQBHdGe0HJhsdlbhZvRGGAJ0z5jxbSyzTcuCPy"
     }
 }

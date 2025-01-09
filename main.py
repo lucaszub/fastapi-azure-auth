@@ -1,97 +1,57 @@
-import json
+import os
+from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
-from typing import Annotated
+from typing import Optional
 import jwt
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jwt.exceptions import InvalidTokenError
-from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
+from jwt.exceptions import InvalidTokenError
+from database import get_db, get_user, create_user_in_db, verify_password, get_password_hash, authenticate_user, UserInDB
+from sqlalchemy.orm import Session
+
+
+# Charger les variables d'environnement depuis le fichier .env
+load_dotenv()
 
 # Constantes pour la gestion des tokens
-SECRET_KEY = "aef88bfdabea058ce9f23143dcf9aacd9164e0de438918b717eda9a1a528babf"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
-# Fichier pour stocker les utilisateurs
-USER_DB_FILE = "users_db.json"
-
-# Gestion des mots de passe
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
 
-
-def load_users_from_file():
-    """Charge les utilisateurs depuis un fichier JSON."""
-    try:
-        with open(USER_DB_FILE, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {}  # Si le fichier n'existe pas encore
-
-
-def save_users_to_file(users):
-    """Sauvegarde les utilisateurs dans un fichier JSON."""
-    with open(USER_DB_FILE, "w") as f:
-        json.dump(users, f, indent=4)
-
-
-# Charger la base d'utilisateurs
-fake_users_db = load_users_from_file()
-
-
+# Définition des Pydantic models pour l'authentification
 class Token(BaseModel):
     access_token: str
     token_type: str
 
-
 class TokenData(BaseModel):
     username: str | None = None
-
-
-class User(BaseModel):
-    username: str
-    email: EmailStr
-    full_name: str | None = None
-    disabled: bool | None = None
-
-
-class UserInDB(User):
-    hashed_password: str
-
 
 class UserCreate(BaseModel):
     username: str
     email: EmailStr
-    full_name: str | None = None
-    password: str
+    full_name: Optional[str] = None
+    disabled: Optional[bool] = False
+    password: str  # Ajout du champ mot de passe
 
+    class Config:
+        orm_mode = True
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+# Modèle Pydantic pour l'utilisateur en base de données
+class UserInDBResponse(BaseModel):
+    username: str
+    email: EmailStr
+    full_name: Optional[str] = None
+    disabled: Optional[bool] = False
 
+    class Config:
+        orm_mode = True
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
-
-
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
-
-
+# Fonctions pour la gestion des tokens
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
@@ -102,84 +62,54 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+# Fonction pour récupérer l'utilisateur actif à partir du token
+def get_current_active_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
+        # Décodage du token JWT
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
+            raise HTTPException(status_code=401, detail="Token is invalid")
+        user = get_user(db, username)
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user
     except InvalidTokenError:
-        raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
+# Routes FastAPI
+
+# Route pour créer un utilisateur
+@app.post("/users/", response_model=UserInDBResponse)
+async def create_user(
+    user: UserCreate, db: Session = Depends(get_db)
 ):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
-
-@app.post("/token", response_model=Token)
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-):
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
-    return Token(access_token=access_token, token_type="bearer")
-
-
-@app.get("/users/me/", response_model=User)
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)]
-):
-    return current_user
-
-
-@app.post("/register/")
-async def register_user(user: UserCreate):
-    """Permettre à un nouvel utilisateur de s'inscrire."""
-    # Vérifie si l'utilisateur existe déjà
-    if user.username in fake_users_db:
-        raise HTTPException(status_code=400, detail="Username already exists")
-
-    # Vérifie si l'email est déjà utilisé
-    if any(u["email"] == user.email for u in fake_users_db.values()):
-        raise HTTPException(status_code=400, detail="Email already in use")
-
-    # Hachage du mot de passe
+    # Vérifier si l'utilisateur existe déjà
+    db_user = get_user(db, user.username)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+    
+    # Hacher le mot de passe avant d'enregistrer dans la base de données
     hashed_password = get_password_hash(user.password)
+    user_in_db = UserInDB(username=user.username, email=user.email, full_name=user.full_name, hashed_password=hashed_password)
+    
+    # Ajouter l'utilisateur à la base de données
+    db_user_created = create_user_in_db(db, user_in_db)
+    return db_user_created  # Retourne l'objet avec les champs définis dans UserInDBResponse
 
-    # Ajout de l'utilisateur à la base
-    fake_users_db[user.username] = {
-        "username": user.username,
-        "email": user.email,
-        "full_name": user.full_name,
-        "hashed_password": hashed_password,
-        "disabled": False,
-    }
+# Route pour se connecter et obtenir un token d'accès
+@app.post("/token", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
+    return {"access_token": access_token, "token_type": "bearer"}
 
-    # Sauvegarde dans le fichier
-    save_users_to_file(fake_users_db)
 
-    return {"message": "User registered successfully"}
+# Route sécurisée pour récupérer les informations de l'utilisateur connecté
+@app.get("/users/me", response_model=UserInDBResponse)
+async def read_users_me(current_user: UserInDBResponse = Depends(get_current_active_user)):
+    return current_user
