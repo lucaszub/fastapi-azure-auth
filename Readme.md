@@ -1,107 +1,78 @@
-# FastAPI Azure Authentication Template
+# 🚀 Authentification avec FastAPI et Azure
 
-Ce projet fournit un template simple pour utiliser l'authentification avec Azure Active Directory dans une application FastAPI, en utilisant SQLAlchemy pour la gestion de la base de données et MySQL sur Azure. Le but est de simplifier l'intégration de l'authentification Azure et de fournir un modèle prêt à l'emploi pour des applications nécessitant cette fonctionnalité.
+Bienvenue dans mon projet personnel dédié à l'implémentation d'un système d'authentification sécurisé avec **FastAPI** et **Azure**.
+Ce projet vise à approfondir mes compétences en sécurité et à créer une base réutilisable pour mes futurs projets.
 
-## Prérequis
+## 📝 Objectifs du projet
 
-Avant de commencer, assurez-vous que vous avez les éléments suivants :
+- **Comprendre les concepts de sécurité** comme les tokens JWT et la gestion des permissions.
+- **Créer une architecture simple et réutilisable** pour intégrer l'authentification dans mes applications futures.
 
-- Un compte Azure et un abonnement actif.
-- Un environnement Python (version 3.8 ou supérieure recommandé).
-- Azure MySQL ou une autre base de données compatible.
-- `pip` pour installer les dépendances.
+## 🔧 Technologies utilisées
 
-## Installation
+- FastAPI : Framework moderne pour créer des APIs rapides et sécurisées en Python.
+- JWT (JSON Web Tokens) : Utilisé pour la gestion des sessions utilisateurs.
+- MySQL : Base de données pour stocker les informations utilisateurs.
+- Azure : Déploiement sur Azure Web App et gestion des secrets avec Azure Key Vault.
+- GitHub Actions : Pour l'automatisation du déploiement.
+- Microsoft Entra ID : Pour l'intégration avec l'authentification d'entreprise.
 
-1. **Clonez ce dépôt** sur votre machine locale.
+## 📈 Avancements
 
-   ```bash
-   git clone https://github.com/yourusername/azure-auth-fastapi.git
-   cd azure-auth-fastapi
-   ```
+- Base de données MySQL sur Azure Database for MySQL.
+- Système d'authentification en local avec FastAPI.
+- Gestion des tokens JWT pour sécuriser les connexions.
 
-2. **Créez un environnement virtue** et activez-le.
+## 🛠 À venir
 
-   ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # Sur Windows : venv\Scripts\activate
-   ```
+- Azure Key Vault pour sécuriser les secrets.
+- Automatisation des déploiements avec GitHub Actions.
+- Gestion des utilisateurs avec différents niveaux d'accès (admin, utilisateur standard).
+- Déploiement de l'API sur Azure Web App.
+  è Déploiement complet de l'application sur Azure avec l'intégration continue.
+- Amélioration de la gestion des erreurs et des validations dans l'API.
+- Ajout de tests unitaires pour garantir la stabilité de l'application.
 
-3. **Installez les dépendances** du projet.
+## 📂 Structure du projet
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configurez les variables d'environnement**.
-   Créez un fichier .env à la racine du projet avec les informations de connexion de votre base de données MySQL Azure.
-   Exemple de fichier .env :
-
-   ```makefile
-   DB_USER=your_database_user
-   DB_PASSWORD=your_database_password
-   DB_HOST=your_database_host
-   DB_PORT=3306
-   DB_NAME=your_database_name
-   DB_SSL_CA=path_to_your_ssl_certificate
-
-   ```
-
-5. **Lancer l'application**
-   Démarrez le serveur FastAPI avec Uvicorn:
-
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-   L'application sera accessible à http://127.0.0.1:8000.
-
-## Strcture du projet
-
-Voici la structure de base du projet :
-
-```bash
-.
-├── main.py             # Point d'entrée de l'application FastAPI
-├── database.py         # Gestion de la connexion à la base de données Azure
-├── models.py           # Modèles de la base de données SQLAlchemy
-├── auth.py             # Gestion de l'authentification Azure
-├── .env                # Fichier de configuration des variables d'environnement
-└── requirements.txt    # Liste des dépendances du projet
-
+```graphql
+Copier le code
+├── app/ # Dossier contenant le code source de l'API
+│ ├── main.py # Point d'entrée de l'application FastAPI
+│ ├── models/ # Modèles de données SQLAlchemy
+│ ├── schemas/ # Schémas Pydantic pour les requêtes et réponses
+│ └── services/ # Logique métier (authentification, gestion des tokens)
+├── requirements.txt # Dépendances Python
+├── .github/ # Dossier GitHub Actions pour CI/CD
+│ └── workflows/
+│ └── deploy.yml # Workflow pour déployer l'application
+└── README.md # Ce fichier
 ```
 
-## Description des fichiers :
+## 📥 Installation et utilisation
 
-- **main.py** : Contient la logique principale de l'application FastAPI et le point d'entrée pour les requêtes HTTP.
-- **db_utils.py** : Contient la logique de connexion à la base de données MySQL sur Azure et la configuration de SQLAlchemy.
-- **models.py** : Contient les modèles SQLAlchemy pour la base de données, en particulier le modèle Users pour la gestion des utilisateurs.
-- **auth.py** : Gère l'authentification Azure, incluant les fonctions pour valider l'utilisateur et sécuriser les endpoints de l'API.
-- **.env** : Fichier contenant les variables d'environnement sensibles (comme les informations de connexion à la base de données).
-
-## Utilisation
-
-1. Endpoints disponibles :
-
-- GET /: Retourne les informations de l'utilisateur connecté. Nécessite une authentification via Azure AD. (a développer par la suite
-
-Exemple de requête :
+1. Cloner le dépôt
 
 ```bash
-curl -X 'GET' \
-'http://127.0.0.1:8000/' \
--H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+git clone https://github.com/ton-compte/nom-du-depot.git
+cd nom-du-depot
 ```
 
-2. **Authentification**:
-   Le projet utilise un middleware pour gérer l'authentification Azure. Les utilisateurs doivent s'authentifier via Azure Active Directory pour accéder aux ressources sécurisées.
-3. Base de données :
-   Ce template utilise MySQL comme base de données pour stocker les informations des utilisateurs. Assurez-vous que la base de données est bien configurée et accessible.
+2. Installer les dépendances
 
-## Contribution
+```bash
+pip install -r requirements.txt
+```
 
-Si vous souhaitez contribuer à ce projet, n'hésitez pas à ouvrir une pull request. Voici quelques points d'amélioration possibles :
+3. Configurer les variables d'environnement
 
-- Ajouter des tests unitaires.
-- Améliorer la gestion des erreurs.
-- Ajouter des fonctionnalités d'autorisation avancées (par exemple, les rôles utilisateur).
+- Crée un fichier .env à la racine du projet et ajoute les variables nécessaires (exemple : DATABASE_URL, SECRET_KEY).
+
+4. Lancer l'application
+
+- L'API sera disponible à http://localhost:8000.
+- La documentation interactive de l'API sera disponible à http://localhost:8000/docs.
+
+## 📧 Contact
+
+Lucas Zubiarrain - zubiarrainlucas@gmail.com
