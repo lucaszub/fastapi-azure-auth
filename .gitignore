@@ -8,3 +8,7 @@ BaltimoreCyberTrustRoot.crt.pem
 test_delete.py
 
 test_connexion.py
+
+test.py
+
+user_db.json
