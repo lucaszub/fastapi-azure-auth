@@ -63,7 +63,7 @@ Voici la structure de base du projet :
 ```bash
 .
 ├── main.py             # Point d'entrée de l'application FastAPI
-├── db_utils.py         # Gestion de la connexion à la base de données Azure
+├── database.py         # Gestion de la connexion à la base de données Azure
 ├── models.py           # Modèles de la base de données SQLAlchemy
 ├── auth.py             # Gestion de l'authentification Azure
 ├── .env                # Fichier de configuration des variables d'environnement
