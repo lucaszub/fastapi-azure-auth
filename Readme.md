@@ -3,6 +3,8 @@
 Bienvenue dans mon projet personnel dédié à l'implémentation d'un système d'authentification sécurisé avec **FastAPI** et **Azure**.
 Ce projet vise à approfondir mes compétences en sécurité et à créer une base réutilisable pour mes futurs projets.
 
+![alt text](image.png)
+
 ## 📝 Objectifs du projet
 
 - **Comprendre les concepts de sécurité** comme les tokens JWT et la gestion des permissions.
