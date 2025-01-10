@@ -1,3 +1,7 @@
 # Environnements virtuels
 venv/
 .venv/
+.env
+BaltimoreCyberTrustRoot.crt.pem
+
+

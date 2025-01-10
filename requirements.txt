@@ -5,3 +5,7 @@ PyJWT
 passlib[bcrypt]
 python-dotenv
 sqlalchemy
+mysql-connector-python
+
+python-jose[cryptography]
+python-multipart

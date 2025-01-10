@@ -158,3 +158,29 @@ Cela démarre le serveur de développement FastAPI à l'adresse http://127.0.0.1
 ### Conclusion
 
 Cette API permet de gérer l'inscription et la connexion des utilisateurs avec un système d'authentification sécurisé via JWT. Elle peut être facilement étendue et utilisée comme base pour des applications nécessitant une gestion des utilisateurs.
+
+récupéré son ip
+
+```bash
+(Invoke-WebRequest -uri "https://api.ipify.org").Content
+```
+
+88.140.191.20
+
+autoriser son ip a accéder à la base de donnée avec les fire wall
+
+```bash
+az mysql flexible-server firewall-rule create `
+  --resource-group auth-fastapi-template `
+  --name mysqldb-lucas `
+  --rule-name AllowMyIP `
+  --start-ip-address 88.140.191.20 `
+  --end-ip-address 88.140.191.20
+```
+
+recupere un certificat
+
+```bash
+curl -o BaltimoreCyberTrustRoot.crt.pem https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem
+
+```
