@@ -4,13 +4,20 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base  # Importation de UserInDB et Base
 from models import Users  # Importation de User
-# Paramètres de connexion à Azure MySQL
-user = "zubiarrain"
-password = "Medard44"  # Remplace par ton mot de passe
-host = "mysqldb-lucas.mysql.database.azure.com"
-port = 3306
-database = "db-auth-template"  # Remplace par le nom de ta base de données
-ssl_ca = "C:/Projet/Cloud-resume/Authentification fast api azure/BaltimoreCyberTrustRoot.crt.pem"  # Chemin vers ton certificat CA
+from dotenv import load_dotenv
+import os
+
+# Charger les variables d'environnement du fichier .env
+load_dotenv()
+
+# Paramètres de connexion à Azure MySQL depuis les variables d'environnement
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+host = os.getenv("DB_HOST")
+port = os.getenv("DB_PORT")
+database = os.getenv("DB_NAME")
+ssl_ca = os.getenv("DB_SSL_CA")
+
 
 # Connexion SQLAlchemy à MySQL
 DATABASE_URL = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}?ssl_ca={ssl_ca}"
