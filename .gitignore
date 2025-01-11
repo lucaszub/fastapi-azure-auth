@@ -12,3 +12,4 @@ test_connexion.py
 test.py
 
 user_db.json
+__pycache__/
