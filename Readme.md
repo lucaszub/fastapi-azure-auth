@@ -24,10 +24,12 @@ Ce projet vise à approfondir mes compétences en sécurité et à créer une ba
 - Base de données MySQL sur Azure Database for MySQL.
 - Système d'authentification en local avec FastAPI.
 - Gestion des tokens JWT pour sécuriser les connexions.
+- Azure Key Vault pour sécuriser les secrets.
+- Déploiement sur azure web app
+- 
 
 ## 🛠 À venir
-
-- Azure Key Vault pour sécuriser les secrets.
+- Configuratins des parfeux sur Azure Database for MySQL pour des données de azure web app 
 - Automatisation des déploiements avec GitHub Actions.
 - Gestion des utilisateurs avec différents niveaux d'accès (admin, utilisateur standard).
 - Déploiement de l'API sur Azure Web App.
