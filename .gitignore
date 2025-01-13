@@ -12,7 +12,8 @@ test_connexion.py
 test.py
 test.db
 
-user_db.json
 __pycache__/
 
 test_azur_key_vault.py
+
+users_db.json
