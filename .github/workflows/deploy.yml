@@ -36,12 +36,12 @@ jobs:
 
       - name: tag Docker image
         run: |
-          docker tag authimages:latest authimageslucasz.azurecr.io/authimages:latest
+          docker tag authimages:latest acrauthtemplate.azurecr.io/authimages:latest
 
       # Push Docker image to ACR
       - name: Push Docker image to ACR
         run: |
-          docker push authimageslucasz.azurecr.io/authimages:latest
+          docker push acrauthtemplate.azurecr.io/authimages:latest
 
       # # Déployer sur Azure Web App
       # - name: Deploy to Azure Web App
