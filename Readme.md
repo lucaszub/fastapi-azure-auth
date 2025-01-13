@@ -40,7 +40,6 @@ Ce projet vise à approfondir mes compétences en sécurité et à créer une ba
 ## 📂 Structure du projet
 
 ```graphql
-Copier le code
 ├── app/ # Dossier contenant le code source de l'API
 │ ├── main.py # Point d'entrée de l'application FastAPI
 │ ├── models/ # Modèles de données SQLAlchemy
