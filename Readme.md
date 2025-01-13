@@ -26,7 +26,6 @@ Ce projet vise à approfondir mes compétences en sécurité et à créer une ba
 - Gestion des tokens JWT pour sécuriser les connexions.
 - Azure Key Vault pour sécuriser les secrets.
 - Déploiement sur azure web app
-- 
 
 ## 🛠 À venir
 - Configuratins des parfeux sur Azure Database for MySQL pour des données de azure web app 
