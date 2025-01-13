@@ -13,21 +13,32 @@ from models import Users
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
+
+# Nom de votre Key Vault
+key_vault_name = "lucaskeyvaultname"
+kv_uri = f"https://{key_vault_name}.vault.azure.net"
+
+# Créez un client pour accéder aux secrets du Key Vault
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=kv_uri, credential=credential)
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"]
 )
 
-# Charger les variables d'environnement
-load_dotenv()
+# # Charger les variables d'environnement
+# load_dotenv()
 
-# Variables de configuration
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-
-
+# # Variables de configuration
+# SECRET_KEY = os.getenv("SECRET_KEY")
+# ALGORITHM = os.getenv("ALGORITHM")
+# ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+SECRET_KEY = client.get_secret("SECRET-KEY").value
+ALGORITHM = client.get_secret("ALGORITHM").value
+ACCESS_TOKEN_EXPIRE_MINUTES = client.get_secret("ACCESS-TOKEN-EXPIRE-MINUTES")
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 

@@ -9,3 +9,6 @@ mysql-connector-python
 
 python-jose[cryptography]
 python-multipart
+azure-identity
+azure-keyvault-secrets
+
