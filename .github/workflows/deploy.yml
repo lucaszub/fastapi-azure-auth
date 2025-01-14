@@ -36,7 +36,7 @@ jobs:
 
       - name: tag Docker image
         run: |
-          docker tag authimages:latest acrauthtemplate.azurecr.io/authimages:v2
+          docker tag authimages:v2 acrauthtemplate.azurecr.io/authimages:v2
 
       # Push Docker image to ACR
       - name: Push Docker image to ACR
@@ -48,4 +48,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: fastapiauthtemplate
-          images: acrauthtemplate.azurecr.io/authwebapp124:V2
+          images: acrauthtemplate.azurecr.io/authwebapp124:v2
