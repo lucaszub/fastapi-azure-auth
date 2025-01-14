@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-import models
+import models as models
 from database import engine, SessionLocal
 from typing import Annotated
-import auth
+import auth as auth
 from auth import get_current_user
 import os
 import uvicorn
@@ -30,7 +30,7 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 #     return {"hello": "world"}
 
 @app.get("/", status_code=status.HTTP_200_OK)
-async def user(user: user_dependency, db: db_dependency):
+async def user(user: Annotated[dict, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]):
     try:
         if user is None:
             raise HTTPException(status_code=401, detail="Authentification Failed")
