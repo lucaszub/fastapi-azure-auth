@@ -24,7 +24,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Log in to Azure Container Registry (ACR)s
+      # Log in to Azure Container Registry (ACR)
       - name: Log in to ACR
         run: |
           az acr login --name acrauthtemplate
@@ -34,7 +34,8 @@ jobs:
         run: |
           docker build -t authimages:v2 .
 
-      - name: tag Docker image
+      # Tag Docker image
+      - name: Tag Docker image
         run: |
           docker tag authimages:v2 acrauthtemplate.azurecr.io/authimages:v2
 
@@ -48,4 +49,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: fastapiauthtemplate
-          images: acrauthtemplate.azurecr.io/authwebapp124:v2
+          images: acrauthtemplate.azurecr.io/authimages:v2 # Correction ici
