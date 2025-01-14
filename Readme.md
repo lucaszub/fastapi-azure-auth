@@ -26,12 +26,12 @@ Ce projet vise à approfondir mes compétences en sécurité et à créer une ba
 - Gestion des tokens JWT pour sécuriser les connexions.
 - Azure Key Vault pour sécuriser les secrets.
 - Déploiement sur azure web app
-
+- Configuratins des parfeux sur Azure Database for MySQL pour des données de azure web app
+-  Automatisation des déploiements avec GitHub Actions.
+-  Déploiement de l'API sur Azure Web App.
 ## 🛠 À venir
-- Configuratins des parfeux sur Azure Database for MySQL pour des données de azure web app 
-- Automatisation des déploiements avec GitHub Actions.
+- déploiement du front connecté à l'api sur 
 - Gestion des utilisateurs avec différents niveaux d'accès (admin, utilisateur standard).
-- Déploiement de l'API sur Azure Web App.
   è Déploiement complet de l'application sur Azure avec l'intégration continue.
 - Amélioration de la gestion des erreurs et des validations dans l'API.
 - Ajout de tests unitaires pour garantir la stabilité de l'application.
