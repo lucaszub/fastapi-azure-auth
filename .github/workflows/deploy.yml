@@ -32,20 +32,20 @@ jobs:
       # Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t authimages:latest .
+          docker build -t authimages:v2 .
 
       - name: tag Docker image
         run: |
-          docker tag authimages:latest acrauthtemplate.azurecr.io/authimages:latest
+          docker tag authimages:latest acrauthtemplate.azurecr.io/authimages:v2
 
       # Push Docker image to ACR
       - name: Push Docker image to ACR
         run: |
-          docker push acrauthtemplate.azurecr.io/authimages:latest
+          docker push acrauthtemplate.azurecr.io/authimages:v2
 
-      # # Déployer sur Azure Web App
-      # - name: Deploy to Azure Web App
-      #   uses: azure/webapps-deploy@v2
-      #   with:
-      #     app-name: weatherappplanname
-      #     images: weatherapplucasz.azurecr.io/weatherapp:latest
+      # Déployer sur Azure Web App
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: fastapiauthtemplate
+          images: acrauthtemplate.azurecr.io/authwebapp124:V2
