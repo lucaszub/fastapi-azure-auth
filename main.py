@@ -5,7 +5,8 @@ from database import engine, SessionLocal
 from typing import Annotated
 import auth
 from auth import get_current_user
-
+import os
+import uvicorn
 
 # Créer l'application FastAPI
 app = FastAPI()
@@ -36,7 +37,10 @@ async def user(user: user_dependency, db: db_dependency):
         return {"User": user}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 80))  # Utilisation de la variable d'environnement 'PORT'
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
 
 
 
