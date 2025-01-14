@@ -23,11 +23,20 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
+
+# @app.get("/hello/")
+# def hello_world():
+#     return {"hello": "world"}
+
 @app.get("/", status_code=status.HTTP_200_OK)
-async def user(user:user_dependency, db:db_dependency):
-    if user is None:
-        raise HTTPException(status_code=401, detail="Authentification Failed")
-    return {"User": user}
+async def user(user: user_dependency, db: db_dependency):
+    try:
+        if user is None:
+            raise HTTPException(status_code=401, detail="Authentification Failed")
+        return {"User": user}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
 
 
 

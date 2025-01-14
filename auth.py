@@ -38,7 +38,8 @@ router = APIRouter(
 # ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 SECRET_KEY = client.get_secret("SECRET-KEY").value
 ALGORITHM = client.get_secret("ALGORITHM").value
-ACCESS_TOKEN_EXPIRE_MINUTES = client.get_secret("ACCESS-TOKEN-EXPIRE-MINUTES")
+# ACCESS_TOKEN_EXPIRE_MINUTES = client.get_secret("ACCESS-TOKEN-EXPIRE-MINUTES")
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
