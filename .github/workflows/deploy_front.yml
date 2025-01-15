@@ -1,0 +1,53 @@
+name: CI/CD Pipeline for FastAPI App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout le code source
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configuration de Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 3. Log in to Azure CLI
+      - name: Log in to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 4. Log in to Azure Container Registry (ACR)
+      - name: Log in to ACR
+        run: |
+          az acr login --name acrauthtemplate
+
+      # 5. Build Docker image depuis le sous-dossier `backend`
+      - name: Build Docker image
+        run: |
+          docker build -t authimagesfront:v1 ./frontend
+
+      # 6. Tag Docker image
+      - name: Tag Docker image
+        run: |
+          docker tag authimagesfront:v1 acrauthtemplate.azurecr.io/authimagesfront:v1
+
+      # 7. Push Docker image to ACR
+      - name: Push Docker image to ACR
+        run: |
+          docker push acrauthtemplate.azurecr.io/authimagesfront:v1
+
+      # # 8. Déployer sur Azure Web App
+      # - name: Deploy to Azure Web App
+      #   uses: azure/webapps-deploy@v1
+      #   with:
+      #     app-name: authwebapp124
+      #     images: acrauthtemplate.azurecr.io/authimagesfront:v1
+      #     slot-name: production

@@ -17,3 +17,8 @@ __pycache__/
 test_azur_key_vault.py
 
 users_db.json
+
+# Créer une Web App en utilisant l'image Docker du ACR
+az webapp create --name weatherapp --resource-group myResourceGroup --plan myAppServicePlan --deployment-container-image-name weatherapplucasz.azurecr.io/weatherapp:latest
+
+az webapp create --name authwebappfront124 
