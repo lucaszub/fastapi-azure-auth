@@ -1,4 +1,3 @@
-import { Button } from "./components/ui/button"
 import LoginPage from "./login/page"
 // LoginPage
 function App() {
