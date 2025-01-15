@@ -7,9 +7,26 @@ import auth as auth
 from auth import get_current_user
 import os
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # Créer l'application FastAPI
 app = FastAPI()
+# Liste des origines autorisées
+origins = [
+    "http://localhost:5174",
+    "http://localhost:5173"
+    # Ajoute d'autres origines si nécessaire
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Autoriser les origines spécifiées
+    allow_credentials=True,
+    allow_methods=["*"],  # Autoriser toutes les méthodes (GET, POST, etc.)
+    allow_headers=["*"],  # Autoriser tous les en-têtes
+)
+
 app.include_router(auth.router)
 models.Base.metadata.create_all(bind=engine)
 
