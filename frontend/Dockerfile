@@ -1,32 +1,29 @@
-# Stage 1: Build the Vite app
-FROM node:16-alpine AS builder
+# Étape 1 : Construction de l'application
+FROM node:18 AS build
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
-
-# Install dependencies
+# Installer les dépendances
+COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application code
+# Copier le code source et construire l'application
 COPY . .
-
-# Build the Vite app
 RUN npm run build
 
-# Stage 2: Serve the built files using http-server
-FROM node:16-alpine
+# Étape 2 : Serveur pour fichiers statiques
+FROM node:18-alpine
 
-# Install http-server globally
-RUN npm install -g http-server
+WORKDIR /app
 
-# Copy the built files from the previous stage
-COPY --from=builder /app/dist /usr/share/app
+# Installer serve pour servir les fichiers statiques
+RUN npm install -g serve
 
-# Expose port 8080
-EXPOSE 8080
+# Copier le build de l'étape précédente
+COPY --from=build /app/dist /app/dist
 
-# Start http-server
-CMD ["http-server", "/usr/share/app", "-p", "8080"]
+# Exposer le port 3000 (ou autre port de ton choix)
+EXPOSE 3000
+
+# Commande pour lancer le serveur
+CMD ["serve", "-s", "dist", "-l", "3000"]

@@ -9,4 +9,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    port: 3000, // Définit le port sur lequel le serveur sera exposé
+  },
 })
