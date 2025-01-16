@@ -15,7 +15,8 @@ app = FastAPI()
 # Liste des origines autorisées
 origins = [
     "http://localhost:5174",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://authwebappdocker.azurewebsites.net/"
     # Ajoute d'autres origines si nécessaire
 ]
 

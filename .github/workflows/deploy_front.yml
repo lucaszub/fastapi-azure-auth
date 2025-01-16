@@ -44,10 +44,10 @@ jobs:
         run: |
           docker push acrauthtemplate.azurecr.io/authimagesfront:v1
 
-      # # 8. Deploy to Azure Web App
-      # - name: Deploy to Azure Web App
-      #   uses: azure/webapps-deploy@v3
-      #   with:
-      #     app-name: authwebapp124
-      #     images: acrauthtemplate.azurecr.io/authimagesfront:v1
-      #     slot-name: production
+      # 8. Deploy to Azure Web App
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: authwebappdocker
+          images: acrauthtemplate.azurecr.io/authimagesfront:v1
+          slot-name: production
