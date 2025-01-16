@@ -37,7 +37,7 @@ jobs:
       # 6. Tag Docker image
       - name: Tag Docker image
         run: |
-          docker tag authimagesfront:v1 acrauthtemplate.azurecr.io/authimagesfront:v1 ./frontend
+          docker tag authimagesfront:v1 acrauthtemplate.azurecr.io/authimagesfront:v1
 
       # 7. Push Docker image to ACR
       - name: Push Docker image to ACR
