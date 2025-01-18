@@ -1,7 +1,7 @@
 // import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './login/page';
-
+import { Connexion } from './components/connexion';
 function App() {
   return (
     <Router>
@@ -19,7 +19,7 @@ function App() {
             path="/test"
             element={
               <div className="">
-                test
+                <Connexion />
               </div>
             }
           />

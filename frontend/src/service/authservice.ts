@@ -10,7 +10,11 @@ export interface CreateUserRequest {
     access_token: string;
     token_type: string;
   }
-
+  export interface LoginRequest {
+    username: string;
+    password: string;
+  }
+  
 
 
 export const createUser = async (userData: CreateUserRequest):Promise<void> => {
@@ -21,12 +25,12 @@ export const createUser = async (userData: CreateUserRequest):Promise<void> => {
         throw error;
     }
 }
-// export const createCustomer = async (customer: { nom: string; prenom:string; email: string; phone: string; address: string }) => {
-//   try {
-//     const response = await axios.post(getApiUrl('/customers/'), customer); // Route d'ajout
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error creating customer", error);
-//     throw error;
-//   }
-// };
+
+
+export const loginUser = async (loginData: LoginRequest) => {
+  const response = await axios.post('/auth/token', {
+    username: loginData.username,
+    password: loginData.password,
+  });
+  return response.data;
+};
