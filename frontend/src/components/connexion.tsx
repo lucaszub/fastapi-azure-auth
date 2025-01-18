@@ -22,7 +22,7 @@ export function Connexion({
       const response = await loginUser(loginData);
       setToken(response.access_token); // Store token if needed (e.g., in localStorage or context)
       setMessage('Login successful');
-      setMessage("Token: " + token)
+      console.log("Token: " + token)
     } catch (error) {
       setMessage('Error logging in');
       console.error('Error logging in:', error);
