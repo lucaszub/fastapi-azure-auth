@@ -111,7 +111,17 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
 
-    
+
+@router.get("/me", response_model=dict)
+async def get_current_user_details(current_user: Annotated[dict, Depends(get_current_user)]):
+    """
+    Route pour voir quel utilisateur est actuellement connecté.
+
+    Retourne :
+        - Un message personnalisé contenant le nom d'utilisateur.
+    """
+    return {"message": f"hello {current_user['username']}"}
+
     """
 Request model for creating a new user.
 Attributes:

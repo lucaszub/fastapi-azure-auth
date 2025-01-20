@@ -28,9 +28,30 @@ export const createUser = async (userData: CreateUserRequest):Promise<void> => {
 
 
 export const loginUser = async (loginData: LoginRequest) => {
-  const response = await axios.post('/auth/token', {
+  const response = await axios.post(getApiUrl('/auth/token'), 
+    new URLSearchParams({
     username: loginData.username,
     password: loginData.password,
-  });
+  }), {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+  }
+);
   return response.data;
+};
+
+
+export const getCurrentUser = async (token: string): Promise<string> => {
+  try {
+      const response = await axios.get(getApiUrl('/auth/me'), {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      });
+      return response.data.message;
+  } catch (error) {
+      console.error("Error fetching user details", error);
+      throw error;
+  }
 };
