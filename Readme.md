@@ -29,8 +29,8 @@ Ce projet vise à approfondir mes compétences en sécurité et à créer une ba
 - Configuratins des parfeux sur Azure Database for MySQL pour des données de azure web app
 -  Automatisation des déploiements avec GitHub Actions.
 -  Déploiement de l'API sur Azure Web App.
+-  - déploiement du front connecté à l'api sur 
 ## 🛠 À venir
-- déploiement du front connecté à l'api sur 
 - Gestion des utilisateurs avec différents niveaux d'accès (admin, utilisateur standard).
   è Déploiement complet de l'application sur Azure avec l'intégration continue.
 - Amélioration de la gestion des erreurs et des validations dans l'API.
